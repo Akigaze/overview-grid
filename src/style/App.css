@@ -1,0 +1,73 @@
+.App {
+    vertical-align: top;
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.grid {
+    margin: 20px auto;
+    width: 300px;
+    min-height: 100px;
+    background-color: white;
+}
+
+.title {
+    width: 122px;
+    /* float: left; */
+    padding-left: 10px;
+    font-family: ProximaNova;
+ height: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #b8bdc2;
+  display: inline-block;
+}
+
+.info {
+    display: inline-block;
+     height: 14px;
+     font-family: ProximaNova;
+     font-size: 12px;
+     font-weight: normal;
+     font-style: normal;
+     font-stretch: normal;
+     line-height: normal;
+     letter-spacing: normal;
+     color: #363b40;
+}
+
+.link{
+ font-family: ProximaNova;
+ font-size: 12px;
+ font-weight: bold;
+ font-style: normal;
+ font-stretch: normal;
+ line-height: normal;
+ letter-spacing: normal;
+ color: #0b85ff;
+}
+
+.normal{
+
+font-family: ProximaNova;
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: normal;
+letter-spacing: normal;
+color: #363b40;
+}
