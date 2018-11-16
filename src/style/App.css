@@ -22,52 +22,29 @@
 
 .title {
     width: 122px;
-    /* float: left; */
     padding-left: 10px;
     font-family: ProximaNova;
- height: 15px;
-  font-size: 12px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  color: #b8bdc2;
-  display: inline-block;
+    height: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #b8bdc2;
+    display: inline-block;
 }
 
 .info {
     display: inline-block;
-     height: 14px;
-     font-family: ProximaNova;
-     font-size: 12px;
-     font-weight: normal;
-     font-style: normal;
-     font-stretch: normal;
-     line-height: normal;
-     letter-spacing: normal;
-     color: #363b40;
+    height: 14px;
 }
 
-.link{
- font-family: ProximaNova;
- font-size: 12px;
- font-weight: bold;
- font-style: normal;
- font-stretch: normal;
- line-height: normal;
- letter-spacing: normal;
- color: #0b85ff;
+.link {
+    font-family: ProximaNova;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0b85ff;
 }
 
-.normal{
-
-font-family: ProximaNova;
-font-size: 12px;
-font-weight: normal;
-font-style: normal;
-font-stretch: normal;
-line-height: normal;
-letter-spacing: normal;
-color: #363b40;
+.normal {
+    font-family: ProximaNova;
+    font-size: 12px;
+    color: #363b40;
 }

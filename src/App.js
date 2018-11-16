@@ -2,15 +2,22 @@ import React, { Component } from "react";
 
 import OverviewGrid from "./component/overview-grid";
 import "./style/App.css";
-import {props} from "./api/data"
+import { overviewInfo } from "./api/data";
 
 class App extends Component {
-
+  onVesselClick = vesselName => {
+    console.log(vesselName);
+  };
   render() {
     return (
       <div className="App">
         <div className="grid">
-          <OverviewGrid {...props}/>
+          <OverviewGrid
+            overviewInfo={overviewInfo}
+            titleUpper={true}
+            subInfoUpper={true}
+            linkClick={this.onVesselClick}
+          />
         </div>
       </div>
     );

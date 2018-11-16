@@ -1,31 +1,51 @@
 import React, { Component, Fragment } from "react";
-import { isEmpty } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import "../style/App.css";
 
 const Indent = props => {
-  return <div style={{ display: "inline-block", width: `${props.width}px` }} />;
+  return (
+    <div
+      style={{
+        display: "inline-block",
+        width: `${props.width}px`
+      }}
+    />
+  );
 };
 
 const InfoItem = props => {
-  let { title, info, infoLink, isIndent } = props;
+  let {
+    title,
+    info,
+    infoLink,
+    titleIndent,
+    titleUpper,
+    infoUpper,
+    infoClick
+  } = props;
+  title = titleUpper ? title.toUpperCase() : title;
+  info = infoUpper ? info.toUpperCase() : info;
   return (
-    <Fragment>
+    <div>
       <div className="title">
-        {isIndent && <Indent width="20" />}
+        {titleIndent && <Indent width="16" />}
         <span>{title}</span>
-        {info.map(content => <br/>)}
       </div>
       <div className="info">
-        {info.map(content => {
-          return (
-            <span className={infoLink ? "link" : "normal"}>
-              {content}
-              <br />
-            </span>
-          );
-        })}
+        {infoLink && infoClick ? (
+          <span
+            className={infoLink ? "link" : "normal"}
+            onClick={() => {
+              infoClick(info);
+            }}
+          >
+            {info}
+          </span>
+        ) : (
+          <span className={infoLink ? "link" : "normal"}>{info}</span>
+        )}
       </div>
-    </Fragment>
+    </div>
   );
 };
 
@@ -35,28 +55,45 @@ export default class OverviewGrid extends Component {
   }
 
   render() {
+    let preTitle = "";
+    let {
+      overviewInfo,
+      titleUpper,
+      infoUpper,
+      subInfoUpper,
+      linkClick
+    } = this.props;
     return (
       <Fragment>
-        {this.props.data.map(item => {
+        {overviewInfo.map((item, index) => {
           let { title, info, subInfo, infoLink } = item;
           return (
-            <div>
-              <InfoItem title={title} info={info} infoLink={infoLink} />
-              <br />
-              <div>
-                {!isEmpty(subInfo) &&
-                  subInfo.map(subItem => {
-                    let { title, info, infoLink } = subItem;
-                    return (
-                      <InfoItem
-                        title={title}
-                        info={info}
-                        infoLink={infoLink}
-                        isIndent={true}
-                      />
-                    );
-                  })}
-              </div>
+            <div key={`info-${index}`}>
+              <InfoItem
+                title={title}
+                info={info}
+                infoLink={infoLink}
+                titleUpper={titleUpper}
+                infoUpper={infoUpper}
+                infoClick={linkClick}
+              />
+              {!isEmpty(subInfo) &&
+                subInfo.map((subItem, index) => {
+                  let { title, info, infoLink } = subItem;
+                  isEqual(preTitle, title) ? (title = "") : (preTitle = title);
+                  return (
+                    <InfoItem
+                      key={`subInfo-${index}`}
+                      title={title}
+                      info={info}
+                      infoLink={infoLink}
+                      titleIndent={true}
+                      titleUpper={titleUpper}
+                      infoUpper={subInfoUpper}
+                      infoClick={linkClick}
+                    />
+                  );
+                })}
             </div>
           );
         })}
