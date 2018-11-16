@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { isEmpty, isEqual } from "lodash";
-import {isTrue, isFalse} from "../util/data-check";
+import { isTrue, isFalse } from "../util/data-check";
 import "../style/App.css";
 
 const Indent = props => {
@@ -25,10 +25,11 @@ const InfoItem = props => {
     infoUpper,
     infoClick
   } = props;
-  titleUpper = !isFalse(titleUpper);
-  infoUpper = !isFalse(infoUpper);
-  let displayTitle = titleUpper ? title.toUpperCase() : title;
-  let displayInfo = infoUpper ? info.toUpperCase() : info;
+  title = isEmpty(title) ? "" : title;
+  info = isEmpty(info) ? "" : info;
+  let displayTitle = !isFalse(titleUpper) ? title.toUpperCase() : title;
+  let displayInfo = !isFalse(infoUpper) ? info.toUpperCase() : info;
+  let infoStyle = infoLink ? (clicked ? "clicked" : "link") : "normal";
   return (
     <div>
       <div className="title">
@@ -36,18 +37,16 @@ const InfoItem = props => {
         <span>{displayTitle}</span>
       </div>
       <div className="info">
-        {infoLink && infoClick ? (
-          <span
-            className={infoLink ? (clicked ? "clicked" :"link") : "normal"}
-            onClick={() => {
-              infoClick({title, info});
-            }}
-          >
-            {displayInfo}
-          </span>
-        ) : (
-          <span className={infoLink ? (clicked ? "clicked" :"link") : "normal"}>{displayInfo}</span>
-        )}
+        <span
+          className={infoStyle}
+          onClick={() => {
+            if (infoLink && infoClick) {
+              infoClick({ title, info });
+            }
+          }}
+        >
+          {displayInfo}
+        </span>
       </div>
     </div>
   );
@@ -56,33 +55,30 @@ const InfoItem = props => {
 export default class OverviewGrid extends Component {
   constructor(props) {
     super(props);
-    this.state = {clickedInfo:{title:"", info:""}};
+    this.state = { clickedInfo: { title: "", info: "" } };
   }
 
-  clickInfo = (infoItem) => {
-      let {clickedInfo} = this.state;
-      let {linkClick} = this.props;
-      if (!isEmpty(infoItem) && !isEqual(clickedInfo, infoItem)) {
-          linkClick(infoItem.info);
-          this.setState({clickedInfo:{title:infoItem.title, info:infoItem.info}});
-      }
-  }
+  clickInfo = infoItem => {
+    let { clickedInfo } = this.state;
+    let { linkClick } = this.props;
+    if (!isEmpty(infoItem) && !isEqual(clickedInfo, infoItem)) {
+      linkClick(infoItem.info);
+      this.setState({
+        clickedInfo: { title: infoItem.title, info: infoItem.info }
+      });
+    }
+  };
 
   render() {
     let preTitle = "";
-    let {
-      overviewInfo,
-      titleUpper,
-      infoUpper,
-      subInfoUpper
-    } = this.props;
-    let {clickedInfo} = this.state;
+    let { overviewInfo, titleUpper, infoUpper, subInfoUpper } = this.props;
+    let { clickedInfo } = this.state;
     return (
       <Fragment>
         {overviewInfo.map((item, index) => {
           let { title, info, subInfo, infoLink } = item;
           isEqual(preTitle, title) ? (title = "") : (preTitle = title);
-          let clicked = infoLink && isEqual(clickedInfo, {title, info})
+          let clicked = infoLink && isEqual(clickedInfo, { title, info });
           return (
             <div key={`info-${index}`}>
               <InfoItem
@@ -92,12 +88,13 @@ export default class OverviewGrid extends Component {
                 clicked={clicked}
                 titleUpper={titleUpper}
                 infoUpper={infoUpper}
-                infoClick={this.clickInfo}/>
+                infoClick={this.clickInfo}
+              />
               {!isEmpty(subInfo) &&
                 subInfo.map((subItem, index) => {
                   let { title, info, infoLink } = subItem;
                   isEqual(preTitle, title) ? (title = "") : (preTitle = title);
-                  let clicked = infoLink && isEqual(clickedInfo, {title, info})
+                  let clicked = infoLink && isEqual(clickedInfo, { title, info });
                   return (
                     <InfoItem
                       key={`subInfo-${index}`}
