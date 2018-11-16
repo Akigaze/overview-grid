@@ -14,8 +14,7 @@ class App extends Component {
         <div className="grid">
           <OverviewGrid
             overviewInfo={overviewInfo}
-            titleUpper={true}
-            subInfoUpper={true}
+            infoUpper={false}
             linkClick={this.onVesselClick}
           />
         </div>

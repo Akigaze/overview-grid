@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { isEmpty, isEqual } from "lodash";
+import {isTrue, isFalse} from "../util/data-check";
 import "../style/App.css";
 
 const Indent = props => {
@@ -24,6 +25,8 @@ const InfoItem = props => {
     infoUpper,
     infoClick
   } = props;
+  titleUpper = !isFalse(titleUpper);
+  infoUpper = !isFalse(infoUpper);
   let displayTitle = titleUpper ? title.toUpperCase() : title;
   let displayInfo = infoUpper ? info.toUpperCase() : info;
   return (
@@ -73,10 +76,10 @@ export default class OverviewGrid extends Component {
       infoUpper,
       subInfoUpper
     } = this.props;
+    let {clickedInfo} = this.state;
     return (
       <Fragment>
         {overviewInfo.map((item, index) => {
-          let {clickedInfo} = this.state;
           let { title, info, subInfo, infoLink } = item;
           isEqual(preTitle, title) ? (title = "") : (preTitle = title);
           let clicked = infoLink && isEqual(clickedInfo, {title, info})
