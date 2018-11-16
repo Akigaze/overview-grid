@@ -18,31 +18,32 @@ const InfoItem = props => {
     title,
     info,
     infoLink,
+    clicked,
     titleIndent,
     titleUpper,
     infoUpper,
     infoClick
   } = props;
-  title = titleUpper ? title.toUpperCase() : title;
-  info = infoUpper ? info.toUpperCase() : info;
+  let displayTitle = titleUpper ? title.toUpperCase() : title;
+  let displayInfo = infoUpper ? info.toUpperCase() : info;
   return (
     <div>
       <div className="title">
         {titleIndent && <Indent width="16" />}
-        <span>{title}</span>
+        <span>{displayTitle}</span>
       </div>
       <div className="info">
         {infoLink && infoClick ? (
           <span
-            className={infoLink ? "link" : "normal"}
+            className={infoLink ? (clicked ? "clicked" :"link") : "normal"}
             onClick={() => {
-              infoClick(info);
+              infoClick({title, info});
             }}
           >
-            {info}
+            {displayInfo}
           </span>
         ) : (
-          <span className={infoLink ? "link" : "normal"}>{info}</span>
+          <span className={infoLink ? (clicked ? "clicked" :"link") : "normal"}>{displayInfo}</span>
         )}
       </div>
     </div>
@@ -52,6 +53,16 @@ const InfoItem = props => {
 export default class OverviewGrid extends Component {
   constructor(props) {
     super(props);
+    this.state = {clickedInfo:{title:"", info:""}};
+  }
+
+  clickInfo = (infoItem) => {
+      let {clickedInfo} = this.state;
+      let {linkClick} = this.props;
+      if (!isEmpty(infoItem) && !isEqual(clickedInfo, infoItem)) {
+          linkClick(infoItem.info);
+          this.setState({clickedInfo:{title:infoItem.title, info:infoItem.info}});
+      }
   }
 
   render() {
@@ -60,37 +71,41 @@ export default class OverviewGrid extends Component {
       overviewInfo,
       titleUpper,
       infoUpper,
-      subInfoUpper,
-      linkClick
+      subInfoUpper
     } = this.props;
     return (
       <Fragment>
         {overviewInfo.map((item, index) => {
+          let {clickedInfo} = this.state;
           let { title, info, subInfo, infoLink } = item;
+          isEqual(preTitle, title) ? (title = "") : (preTitle = title);
+          let clicked = infoLink && isEqual(clickedInfo, {title, info})
           return (
             <div key={`info-${index}`}>
               <InfoItem
                 title={title}
                 info={info}
                 infoLink={infoLink}
+                clicked={clicked}
                 titleUpper={titleUpper}
                 infoUpper={infoUpper}
-                infoClick={linkClick}
-              />
+                infoClick={this.clickInfo}/>
               {!isEmpty(subInfo) &&
                 subInfo.map((subItem, index) => {
                   let { title, info, infoLink } = subItem;
                   isEqual(preTitle, title) ? (title = "") : (preTitle = title);
+                  let clicked = infoLink && isEqual(clickedInfo, {title, info})
                   return (
                     <InfoItem
                       key={`subInfo-${index}`}
                       title={title}
                       info={info}
                       infoLink={infoLink}
+                      clicked={clicked}
                       titleIndent={true}
                       titleUpper={titleUpper}
                       infoUpper={subInfoUpper}
-                      infoClick={linkClick}
+                      infoClick={this.clickInfo}
                     />
                   );
                 })}
